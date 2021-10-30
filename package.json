@@ -6,9 +6,9 @@
   "directories": {
     "lib": "lib"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts" : { 
+    "test" : "jest" 
+ },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LukeMcMi/Team_Profile_Generator.git"
@@ -22,5 +22,8 @@
   "homepage": "https://github.com/LukeMcMi/Team_Profile_Generator#readme",
   "dependencies": {
     "inquirer": "^8.2.0"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1"
   }
 }
