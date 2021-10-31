@@ -1,19 +1,16 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
-const Manager = require("./lib/Manager");
+const Engineer = require("./lib/classes/Engineer");
+const Intern = require("./lib/classes/Intern");
+const Manager = require("./lib/classes/Manager");
 
 const employees = [];
 
-initApp();
+function initApp() {
+    startHTML();
+    addMember();
+};
 
-const addMember = () => {
-    console.log(`
-    ---------------------------------
-    Add team member to team
-    ---------------------------------
-    `);
 function addMember () {
     inquirer.prompt([{
         message: "Enter team member's name",
@@ -79,4 +76,4 @@ function addMember () {
             });
         });
     });
-}};
+};

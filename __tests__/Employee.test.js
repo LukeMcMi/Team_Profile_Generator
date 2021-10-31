@@ -1,5 +1,5 @@
 // const { test } = require("@jest/core");
-const Employee = require("../lib/Employee");
+const Employee = require("../lib/classes/Employee");
 
 test("Can initiate Employee", () => {
     const e = new Employee();
