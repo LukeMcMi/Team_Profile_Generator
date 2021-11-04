@@ -12,7 +12,8 @@ function initApp() {
 };
 
 function addMember () {
-    inquirer.prompt([{
+    inquirer.prompt([
+    {    
         message: "Enter team member's name",
         name: "name"
     },
@@ -77,3 +78,72 @@ function addMember () {
         });
     });
 };
+
+// render HTML
+
+// function startHTML() {
+//     const mainHTML = require("./src/main.html");
+//     fs.writeFile("./dist/team.html", html, function(err) {
+//         if (err) {
+//             console.log(err);
+//         }
+//     });
+//     console.log("start");
+// }
+
+            var main = fs.readFileSync('./src/main.html', 'utf8');
+           
+
+            // main = main.replace(/{{teamTitle}}/g, teamTitle);
+
+            // Loops through employees and prints their cards
+            var managerCard = fs.readFileSync('./src/manager.html', 'utf8');
+            managerCard = managerCard.replace('{{name}}', employee.getName());
+            managerCard = managerCard.replace('{{role}}', employee.getRole());
+            managerCard = managerCard.replace('{{id}}', employee.getId());
+            managerCard = managerCard.replace('{{email}}', employee.getEmail());
+            managerCard = managerCard.replace('{{officeNumber}}', employee.getOfficeNumber());
+
+
+            // After manager append team members 
+
+            var cards = managerCard; 
+            for (var i = 0; i < teamMembers.length; i++) {
+                var employee = teamMembers[i];
+                cards += renderEmployee(employee);
+            }
+
+            // Outputs to team.html.
+            // Cards to main.html
+            
+            main = main.replace('{{cards}}', cards);
+
+            fs.writeFileSync('./dist/team.html', main);
+
+
+
+
+
+// renderEmployee function that is called above.
+
+function renderEmployee(employee) {
+    if (employee.getRole() === "Intern") {
+        var internCard = fs.readFileSync('./src/intern.html', 'utf8');
+        internCard = internCard.replace('{{name}}', employee.getName());
+        internCard = internCard.replace('{{role}}', employee.getRole());
+        internCard = internCard.replace('{{id}}', employee.getId());
+        internCard = internCard.replace('{{email}}', employee.getEmail());
+        internCard = internCard.replace('{{school}}', employee.getSchool());
+        return internCard;
+    } else if (employee.getRole() === "Engineer") {
+        var engineerCard = fs.readFileSync('./src/engineer.html', 'utf8');
+        engineerCard = engineerCard.replace('{{name}}', employee.getName());
+        engineerCard = engineerCard.replace('{{role}}', employee.getRole());
+        engineerCard = engineerCard.replace('{{id}}', employee.getId());
+        engineerCard = engineerCard.replace('{{email}}', employee.getEmail());
+        engineerCard = engineerCard.replace('{{github}}', employee.getGithub());
+        return engineerCard;
+    }
+}
+
+initApp();
