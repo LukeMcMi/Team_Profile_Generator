@@ -97,6 +97,7 @@ function lesserEmployeeData() {
             managerCard = managerCard.replace('{{ role }}', manager.getRole());
             managerCard = managerCard.replace('{{ id }}', manager.getId());
             managerCard = managerCard.replace('{{ email }}', manager.getEmail());
+            managerCard = managerCard.replace('{{ address }}', manager.getEmail());
             managerCard = managerCard.replace('{{ officeNumber }}', manager.getOfficeNumber());
 
             var cards = managerCard; 
@@ -120,6 +121,7 @@ function renderEmployee(employee) {
         internCard = internCard.replace('{{ role }}', employee.getRole());
         internCard = internCard.replace('{{ id }}', employee.getId());
         internCard = internCard.replace('{{ email }}', employee.getEmail());
+        internCard = internCard.replace('{{ address }}', employee.getEmail());
         internCard = internCard.replace('{{ school }}', employee.getSchool());
         return internCard;
     } else if (employee.getRole() === "Engineer") {
@@ -128,7 +130,9 @@ function renderEmployee(employee) {
         engineerCard = engineerCard.replace('{{ role }}', employee.getRole());
         engineerCard = engineerCard.replace('{{ id }}', employee.getId());
         engineerCard = engineerCard.replace('{{ email }}', employee.getEmail());
+        engineerCard = engineerCard.replace('{{ address }}', employee.getEmail());
         engineerCard = engineerCard.replace('{{ github }}', employee.getGithub());
+        engineerCard = engineerCard.replace('{{ githubID }}', employee.getGithub());
         return engineerCard;
     }
 }
