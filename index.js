@@ -4,125 +4,112 @@ const Engineer = require("./lib/classes/Engineer");
 const Intern = require("./lib/classes/Intern");
 const Manager = require("./lib/classes/Manager");
 
-const employees = [];
+const teamMembers = [];
+let manager;
 
 function initApp() {
-    startHTML();
-    addMember();
+    renderEmployee();
+    managerData();
 };
 
-function addMember () {
+function managerData() {
     inquirer.prompt([
-    {    
-        message: "Enter team member's name",
-        name: "name"
-    },
-    {
-        type: "list",
-        message: "Select team member's role",
-        choices: [
-            "Engineer",
-            "Intern",
-            "Manager"
-        ],
-        name: "role"
-    },
-    {
-        message: "Enter team member's id",
-        name: "id"
-    },
-    {
-        message: "Enter team member's email address",
-        name: "email"    
-    }])
-    .then(function({name, role, id, email}) {
-        let roleInfo = "";
-        if (role === "Engineer") {
-            roleInfo = "github";
-        } else if (role === "Intern") {
-            roleInfo = "school";
-        } else {
-            roleInfo = "officeNumber";
-        }
-        inquirer.prompt([{
-            message: `Enter team member's ${roleInfo}`,
-            name: "roleInfo"
+        {  
+            type: "input",
+            message: "Please enter Managers name",
+            name: "managerName"
+        },
+        { 
+            type: "input",
+            message: "Please enter Manager's ID",
+            name: "managerID"
+        },
+        { 
+            type: "input",
+            message: "Please enter Manager's email",
+            name: "managerEmail"
         },
         {
-            type: "list",
-            message: "Would you like to add more team members?",
-            choices: [
-                "yes",
-                "no"
-            ],
-            name: "moreMembers"    
-        }])
-        .then(function({roleInfo, moreMembers}) {
-            let newMember;
-            if (role === "Engineer") {
-                newMember = new Engineer(name, id, email, roleInfo);
-            } else if (role === "Intern") {
-                newMember = new Intern(name, id, email, roleInfo);
-            } else {
-                newMember = new Manager(name, id, email, roleInfo);
-            }
-            employees.push(newMember);
-            addHtml(newMember)
-            .then(function(){
-                if (moreMembers === "yes") {
-                    addMember();
-                } else {
-                    finishHtml()
-                }
-            });
+            type: "input",
+            message: "Please enter Manager's office number",
+            name: "officeNumber"
+        }]).then(managerAnswers => {
+            manager = new Manager(managerAnswers.managerName, managerAnswers.managerID, managerAnswers.managerEmail, managerAnswers.officeNumber);
+            console.log("Please have employee information ready")
+            lesserEmployeeData();
         });
-    });
-};
+}
 
-// render HTML
-
-// function startHTML() {
-//     const mainHTML = require("./src/main.html");
-//     fs.writeFile("./dist/team.html", html, function(err) {
-//         if (err) {
-//             console.log(err);
-//         }
-//     });
-//     console.log("start");
-// }
-
+function lesserEmployeeData() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "What is this employee's role?",
+            name: "employeeRole",
+            choices: ["Intern", "Engineer"]
+        },
+        {
+            type: "input",
+            message: "Please enter employee name ",
+            name: "employeeName"
+        },
+        {
+            type: "input",
+            message: "Please enter employee id",
+            name: "employeeId"
+        },
+        {
+            type: "input",
+            message: "Please enter employee email",
+            name: "employeeEmail"
+        },
+        {
+            type: "input",
+            message: "Github of Engineer",
+            name: "github",
+            when: (userInput) => userInput.employeeRole === "Engineer"
+        },
+        {
+            type: "input",
+            message: "Intern's School",
+            name: "school",
+            when: (userInput) => userInput.employeeRole === "Intern"
+        },
+        {
+            type: "confirm",
+            name: "newEmployee",
+            message: "Would you like to add another employee?" 
+        }
+    ]).then(answers => {
+        if (answers.employeeRole === "Intern") {
+            const employee = new Intern(answers.employeeName, answers.employeeId, answers.employeeEmail, answers.school);
+            teamMembers.push(employee);
+        } else if (answers.employeeRole === "Engineer") {
+            teamMembers.push(new Engineer(answers.employeeName, answers.employeeId, answers.employeeEmail, answers.github));
+        }
+        if (answers.newEmployee === true) {
+            lesserEmployeeData();
+        } else {
             var main = fs.readFileSync('./src/main.html', 'utf8');
-           
-
-            // main = main.replace(/{{teamTitle}}/g, teamTitle);
-
-            // Loops through employees and prints their cards
+        
             var managerCard = fs.readFileSync('./src/manager.html', 'utf8');
-            managerCard = managerCard.replace('{{name}}', employee.getName());
-            managerCard = managerCard.replace('{{role}}', employee.getRole());
-            managerCard = managerCard.replace('{{id}}', employee.getId());
-            managerCard = managerCard.replace('{{email}}', employee.getEmail());
-            managerCard = managerCard.replace('{{officeNumber}}', employee.getOfficeNumber());
-
-
-            // After manager append team members 
+            managerCard = managerCard.replace('{{name}}', manager.getName());
+            managerCard = managerCard.replace('{{role}}', manager.getRole());
+            managerCard = managerCard.replace('{{id}}', manager.getId());
+            managerCard = managerCard.replace('{{email}}', manager.getEmail());
+            managerCard = managerCard.replace('{{officeNumber}}', manager.getOfficeNumber());
 
             var cards = managerCard; 
             for (var i = 0; i < teamMembers.length; i++) {
                 var employee = teamMembers[i];
                 cards += renderEmployee(employee);
             }
-
-            // Outputs to team.html.
-            // Cards to main.html
-            
             main = main.replace('{{cards}}', cards);
 
             fs.writeFileSync('./dist/team.html', main);
-
-
-
-
+        }
+    });
+}
 
 // renderEmployee function that is called above.
 
@@ -146,4 +133,4 @@ function renderEmployee(employee) {
     }
 }
 
-initApp();
+managerData();
