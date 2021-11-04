@@ -93,18 +93,18 @@ function lesserEmployeeData() {
             var main = fs.readFileSync('./src/main.html', 'utf8');
         
             var managerCard = fs.readFileSync('./src/manager.html', 'utf8');
-            managerCard = managerCard.replace('{{name}}', manager.getName());
-            managerCard = managerCard.replace('{{role}}', manager.getRole());
-            managerCard = managerCard.replace('{{id}}', manager.getId());
-            managerCard = managerCard.replace('{{email}}', manager.getEmail());
-            managerCard = managerCard.replace('{{officeNumber}}', manager.getOfficeNumber());
+            managerCard = managerCard.replace('{{ name }}', manager.getName());
+            managerCard = managerCard.replace('{{ role }}', manager.getRole());
+            managerCard = managerCard.replace('{{ id }}', manager.getId());
+            managerCard = managerCard.replace('{{ email }}', manager.getEmail());
+            managerCard = managerCard.replace('{{ officeNumber }}', manager.getOfficeNumber());
 
             var cards = managerCard; 
             for (var i = 0; i < teamMembers.length; i++) {
                 var employee = teamMembers[i];
                 cards += renderEmployee(employee);
             }
-            main = main.replace('{{cards}}', cards);
+            main = main.replace('{{ cards }}', cards);
 
             fs.writeFileSync('./dist/team.html', main);
         }
@@ -116,19 +116,19 @@ function lesserEmployeeData() {
 function renderEmployee(employee) {
     if (employee.getRole() === "Intern") {
         var internCard = fs.readFileSync('./src/intern.html', 'utf8');
-        internCard = internCard.replace('{{name}}', employee.getName());
-        internCard = internCard.replace('{{role}}', employee.getRole());
-        internCard = internCard.replace('{{id}}', employee.getId());
-        internCard = internCard.replace('{{email}}', employee.getEmail());
-        internCard = internCard.replace('{{school}}', employee.getSchool());
+        internCard = internCard.replace('{{ name }}', employee.getName());
+        internCard = internCard.replace('{{ role }}', employee.getRole());
+        internCard = internCard.replace('{{ id }}', employee.getId());
+        internCard = internCard.replace('{{ email }}', employee.getEmail());
+        internCard = internCard.replace('{{ school }}', employee.getSchool());
         return internCard;
     } else if (employee.getRole() === "Engineer") {
         var engineerCard = fs.readFileSync('./src/engineer.html', 'utf8');
-        engineerCard = engineerCard.replace('{{name}}', employee.getName());
-        engineerCard = engineerCard.replace('{{role}}', employee.getRole());
-        engineerCard = engineerCard.replace('{{id}}', employee.getId());
-        engineerCard = engineerCard.replace('{{email}}', employee.getEmail());
-        engineerCard = engineerCard.replace('{{github}}', employee.getGithub());
+        engineerCard = engineerCard.replace('{{ name }}', employee.getName());
+        engineerCard = engineerCard.replace('{{ role }}', employee.getRole());
+        engineerCard = engineerCard.replace('{{ id }}', employee.getId());
+        engineerCard = engineerCard.replace('{{ email }}', employee.getEmail());
+        engineerCard = engineerCard.replace('{{ github }}', employee.getGithub());
         return engineerCard;
     }
 }
